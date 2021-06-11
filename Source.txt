@@ -1,0 +1,3195 @@
+settings
+{
+	lobby
+	{
+		Allow Players Who Are In Queue: Yes
+		Max Spectators: 0
+	}
+
+	modes
+	{
+		Deathmatch
+		{
+			enabled maps
+			{
+				Blizzard World
+				Castillo
+				Château Guillard Halloween
+				Eichenwalde
+				Hanamura
+				Hollywood
+				Horizon Lunar Colony
+				Ilios Well
+				King's Row Winter
+				Lijiang Control Center
+				Nepal Shrine
+				Oasis City Center
+				Paris
+				Temple of Anubis
+				Volskaya Industries
+			}
+		}
+
+		General
+		{
+			Allow Hero Switching: Off
+			Game Mode Start: Immediately
+			Hero Limit: Off
+			Kill Cam: Off
+			Kill Feed: Off
+			Respawn As Random Hero: On
+			Self Initiated Respawn: Off
+			Skins: Off
+			Spawn Health Packs: Enabled
+		}
+	}
+
+	heroes
+	{
+		General
+		{
+			Damage Received: 130%
+			Ultimate Ability: Off
+
+			Ana
+			{
+				Projectile Speed: 500%
+			}
+
+			Baptiste
+			{
+				Immortality Field: Off
+			}
+
+			Bastion
+			{
+				Health: 67%
+			}
+
+			D.Va
+			{
+				Spawn Without Mech: On
+				Ultimate Ability Self-Destruct: Off
+			}
+
+			Mercy
+			{
+				Guardian Angel: Off
+				Regeneration: Off
+				Resurrect: Off
+			}
+
+			Orisa
+			{
+				Health: 50%
+				Protective Barrier: Off
+			}
+
+			Reinhardt
+			{
+				Barrier Field: Off
+				Health: 50%
+			}
+
+			Roadhog
+			{
+				Health: 50%
+			}
+
+			Sigma
+			{
+				Experimental Barrier: Off
+			}
+
+			Symmetra
+			{
+				Damage Dealt: 120%
+				Sentry Turret: Off
+			}
+
+			Torbjörn
+			{
+				Deploy Turret: Off
+			}
+
+			Winston
+			{
+				Barrier Projector: Off
+				Health: 50%
+			}
+
+			Wrecking Ball
+			{
+				Health: 50%
+			}
+
+			Zarya
+			{
+				Damage Dealt: 130%
+				Health: 80%
+				Particle Barrier: Off
+				Projected Barrier: Off
+			}
+
+			enabled heroes
+			{
+				D.Va
+			}
+		}
+	}
+}
+
+variables
+{
+	global:
+		0: TraitorList
+		1: HeroList
+		2: GameState
+		3: RoundNumber
+		4: TraitorCount
+		5: HeroCount
+		6: PackageStaticArray
+		7: PackageCurrentIndex
+		8: PackageGameplayHero
+		9: PackageGameplayPosition
+		10: PackageGameplayVisible
+		11: PackageGameplayIDPrepare
+		12: MapSecondGeneration
+		13: BaseHero
+		14: TerroristWon
+		15: InnocentsWon
+		16: TraitorCounter
+		17: TerroristName
+		18: RevealIcons
+		19: TerroristTimerMinutes
+		20: TerroristTimerSeconds
+		21: TerroristTimerPreviousMatchTime
+		23: RoundTimerMinutesStart
+		24: PlayersPerTraitor
+		25: PlayersPerHero
+		32: ClueDropPosition
+		33: ClueDropVisible
+		34: ClueDropPlayerArray
+		35: ClueDropForLoopVariable
+		36: ClueDropTimeOfDeathMinute
+		37: ClueDropLastSeenPerson
+		38: ClueDropRoleString
+		39: ClueDropInvestigationProgress
+
+	player:
+		0: PackageCounterIndex
+		1: PackageSelectedID
+		2: PackageFoundState
+		3: PlayerReadyState
+		4: PlayerPressedInteractCrouch
+		5: TerroristTimerForLoopVariable
+		6: PlayerReadyGUI
+		7: HeroInvestigating
+		8: HeroInvestigateIndex
+		9: HeroNoClueFound
+		10: HeroInvestigationHUD
+		13: SonarPlayerList
+		14: SonarTargetFound
+		15: SonarCurrentTarget
+		16: LastSeenPlayer
+}
+
+subroutines
+{
+	0: ResetAllPickups
+	1: CreateAllPickups
+	2: PlayerReset
+	3: CreateRoleHUD
+	4: DropSoulOrb
+	5: CreateAllSoulOrbs
+	7: ResetAllOrbHUDS
+}
+
+rule("ParisDynamicArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Paris);
+		Global.GameState == 1;
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Global.MapSecondGeneration = Randomized Array(Randomized Array(Randomized Array(Array(Hero(Ana), Hero(Widowmaker), Hero(Symmetra),
+			Hero(Doomfist), Hero(Hanzo), Hero(Genji), Hero(Mei), Hero(Mercy), Hero(McCree), Hero(Tracer), Hero(Ashe), Hero(Brigitte)))));
+		Global.MapSecondGeneration = Array Slice(Global.MapSecondGeneration, 0, 1);
+		disabled Wait(0.016, Ignore Condition);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-103.461, 16.318, -99.667));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-126.183, 14.318, -89.931));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-83.704, 14.317, -111.568));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-54.877, 14.315, -78.233));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-46.674, 10.397, -51.937));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-91.593, 12.335, -38.423));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-126.366, 11.319, -62.693));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-101.616, 13.315, -60.842));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-78.756, 11.172, -49.238));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-93.877, 13.417, -78.810));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-122.684, 11.320, -68.495));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-80.317, 16.318, -87.159));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration);
+		Modify Global Variable(MapSecondGeneration, Append To Array, Append To Array(Global.MapSecondGeneration, Append To Array(
+			Global.MapSecondGeneration, Global.MapSecondGeneration)));
+		Modify Global Variable(MapSecondGeneration, Append To Array, Append To Array(Global.MapSecondGeneration, Append To Array(
+			Global.MapSecondGeneration, Global.MapSecondGeneration)));
+		Global.PackageGameplayHero = Global.MapSecondGeneration;
+	}
+}
+
+rule("NepalShrineStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Nepal Shrine);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-51.344, 17.813, -91.289));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-77.470, 16.416, -56.176));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zenyatta));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-23.939, 23.319, -45.135));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-72.933, 13.317, -34.837));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-10.446, 23.316, -77.333));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-30.781, 11.319, -12.389));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-55.302, 14.170, 0.017));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zenyatta));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-30.881, 11.315, 12.978));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-29.988, 12.332, -44.560));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-31.923, 18.605, -24.360));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-72.422, 12.493, 47.595));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-45.031, 14.172, 0.140));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zenyatta));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-57.350, 20.319, 48.690));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-46.642, 16.318, 59.097));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-77.370, 16.415, 56.108));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-27.791, 18.319, 22.766));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-29.089, 20.803, 92.034));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zenyatta));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-38.558, 11.320, 27.717));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-57.615, 11.541, 11.642));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-29.820, 12.319, 43.979));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+	}
+}
+
+rule("CastilloStaticBaseHero")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Castillo);
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(Sombra);
+	}
+}
+
+rule("CastilloDynamicArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Castillo);
+		Global.GameState == 1;
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(Sombra);
+		Global.PackageStaticArray = Empty Array;
+		If(Random Integer(0, 100) == 69);
+			Global.MapSecondGeneration = Array(Hero(Sombra), Hero(Sombra), Hero(Sombra), Hero(Sombra), Hero(Sombra));
+		Else;
+			Global.MapSecondGeneration = Randomized Array(Randomized Array(Randomized Array(Remove From Array(All Heroes, Hero(Sombra)))));
+		End;
+		Global.MapSecondGeneration = Array Slice(Global.MapSecondGeneration, 0, 5);
+		disabled Wait(0.016, Ignore Condition);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-115.998, 39.875, 60.978));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[0]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-111.503, 40.845, 76.215));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[1]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-86.151, 39.942, 55.112));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[2]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-117.914, 35.868, 49.024));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[3]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-114.477, 33.908, 23.687));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[4]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-82.743, 33.868, 58.147));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[0]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-99.531, 33.866, 95.420));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[1]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-118.602, 35.866, 75.440));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[2]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-98.074, 34.627, 55.903));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[3]);
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-126.664, 35.678, 63.094));
+		Modify Global Variable(PackageStaticArray, Append To Array, Global.MapSecondGeneration[4]);
+		Global.PackageGameplayHero = Append To Array(Global.MapSecondGeneration, Global.MapSecondGeneration);
+	}
+}
+
+rule("DorandoStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Dorado);
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(D.Va);
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(93.540, 19.329, 12.220));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(McCree));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(140.201, 19.069, 11.564));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(159.360, 11.331, -7.478));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Roadhog));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(127.069, 10.335, -22.189));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(89.649, 8.445, -11.325));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(114.667, 12.319, 44.465));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(McCree));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(68.996, 18.319, 41.485));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(70.794, 15.330, 17.940));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Roadhog));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(98.464, 14.312, 13.232));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(131.076, 12.366, 26.111));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(104.326, 14.315, 32.178));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(McCree));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(110.706, 12.331, -33.697));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(139.042, 15.328, 48.861));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Roadhog));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(99.711, 21.320, 27.060));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(98.783, 19.299, -1.619));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+	}
+}
+
+rule("AnubisTempleStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Temple of Anubis);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(12.253, 4.860, 60.627));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Pharah));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-6.097, 6.887, 60.300));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-28.489, 2.783, 55.800));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Doomfist));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-25.450, 2.828, 64.051));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-6.940, 5.321, 122.350));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Symmetra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-30.333, 4.956, 107.044));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Pharah));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-25.875, 8.319, 100.656));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(17.182, 5.731, 114.132));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Doomfist));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(1.471, 5.429, 97.955));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-59.002, 2.840, 50.568));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Symmetra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-37.139, 6.328, 8.300));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Pharah));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-62.898, 7.826, 39.137));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-3.611, 2.159, 31.823));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Doomfist));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-6.901, 2.198, 30.552));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-33.262, 2.828, 70.815));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-17.956, 6.031, 86.535));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Pharah));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-35.831, 6.819, 59.639));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-37.941, 3.305, 50.932));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Doomfist));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-29.613, 5.644, 126.118));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-13.217, 6.807, 48.763));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+	}
+}
+
+rule("LunarColonyStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Horizon Lunar Colony);
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(Sombra);
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-25.983, 18.197, -121.550));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-44.813, 5.799, -101.696));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Echo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-25.163, 6.301, -158.324));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Winston));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-7.812, 4.302, -111.953));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Wrecking Ball));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-34.991, 11.299, -117.687));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-46.663, 6.302, -137.979));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(43.487, 8.301, -49.509));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Echo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(49.618, 17.529, -85.388));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Winston));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(96.648, 13.154, -66.987));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Wrecking Ball));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(32.714, 15.286, -93.259));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(68.798, 8.298, -41.561));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(8.076, 8.301, -86.316));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Echo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(86.072, 7.913, -63.776));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Winston));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(47.340, 7.300, -68.466));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Wrecking Ball));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(37.286, 15.301, -60.288));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(54.271, 9.302, -101.305));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+	}
+}
+
+rule("LijangControlCenterStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Lijiang Control Center);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-60.132, 267.820, 332.972));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-41.456, 269.817, 356.395));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ashe));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-10.149, 271.319, 340.333));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sigma));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(0.276, 279.321, 337.238));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Bastion));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-0.002, 271.320, 320.890));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-43.642, 268.317, 300.724));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-40.948, 266.317, 309.455));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Pharah));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-32.004, 270.598, 301.095));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sigma));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(23.862, 268.321, 327.899));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Bastion));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(58.090, 268.766, 357.074));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(0.010, 279.320, 300.970));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(16.833, 271.267, 345.934));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ashe));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(23.075, 268.317, 304.248));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sigma));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-0.046, 271.319, 263.165));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Bastion));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-22.835, 271.320, 352.937));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(41.123, 269.754, 356.229));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(43.533, 268.315, 300.721));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Pharah));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(6.496, 268.486, 290.488));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sigma));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-6.200, 268.484, 289.698));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Bastion));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(23.005, 270, 353.018));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+	}
+}
+
+rule("VolskayaStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Volskaya Industries);
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(Mercy);
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-82.506, 3.592, 79.701));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(15.306, 3.471, 93.891));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-13.616, -2.242, 90.269));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zarya));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-26.638, 3.761, 89.488));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(14.403, -0.528, 54.419));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-96.015, -0.529, 30.819));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-47.557, 1.395, 72.320));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-94.470, 0.726, 49.313));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zarya));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-65.040, 3.469, 86.799));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-13.799, 2.471, 108.482));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-63.015, -1.028, 35.822));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-88.578, 3.472, 67.937));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-51.704, -1.531, 53.278));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zarya));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-9.411, 2.178, 59.894));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-112.610, -2.528, 69.831));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(28.234, -2.594, 78.616));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-97.945, 3.471, 31.659));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-59.117, -2.529, 86.815));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zarya));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-66.914, 3.969, 50.015));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-118.355, -0.528, 42.740));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+	}
+}
+
+rule("IliosWellStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Ilios Well);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-257.978, -3.282, 12.827));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-252.544, 1.408, 45.307));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-283.330, 0.986, 13.845));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-230.455, 6.546, 8.888));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-211.368, 6.180, 1.492));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Echo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-179.466, -3.291, -66.172));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-176.960, 0.977, -89.256));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-149.510, 1.602, -61.563));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-200.875, 6.464, -45.463));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-190.440, 6.455, -19.598));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Echo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-219.424, 1.452, -27.429));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-168.268, 6.451, -29.868));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-195.672, 2.464, -4.630));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-224.127, 6.452, 23.213));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-227.643, 0.449, -35.636));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Echo));
+	}
+}
+
+rule("KingsRowWinterStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(King's Row Winter);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-34.401, 3.448, -51.576));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-31.176, 7.452, -50.002));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-58.567, 1.390, -22.841));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-35.835, 1.308, -24.766));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Mei));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-95.493, -1.048, -46.464));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-84.339, 2.389, -7.535));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-99.586, 8.389, -6.657));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-46.362, 1.448, 0.956));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-74.707, 1.949, -39.577));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Mei));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-53.855, 1.448, 12.412));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-31.610, 10.451, -13.778));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-76.290, 5.952, -37.157));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-91.566, 3.441, 11.578));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-91.530, 2.264, -36.351));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Mei));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-81.888, 7.451, -6.235));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+	}
+}
+
+rule("OasisCityCenterStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Oasis City Center);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(131.777, 3.452, 247.625));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(143.537, 3.452, 259.329));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(143.551, 3.598, 247.542));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(155.080, 3.452, 247.359));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Orisa));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(143.581, 3.452, 235.908));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Symmetra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(108.914, 3.452, 282.213));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(84.656, 2.454, 298.489));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(110.347, 5.452, 249.688));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(114.001, 2.251, 217.974));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Orisa));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(150.019, 5.552, 284.053));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Symmetra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(177.872, 3.452, 213.362));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Lúcio));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(195.286, 2.452, 188.617));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ana));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(145.278, 5.451, 214.757));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(171.244, 5.449, 275.095));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Orisa));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(180.103, 5.549, 254.181));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Symmetra));
+	}
+}
+
+rule("ChateauHalloweenStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Château Guillard Halloween);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(206.620, 1.449, 84.049));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(222.573, 9.451, 85.782));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(180.221, 10.452, 102.309));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Roadhog));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(177.390, 1.448, 51.712));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Junkrat));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(235.729, 5.448, 113.305));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Moira));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(169.429, 6.448, 76.402));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(197.096, 17.948, 69.200));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(206.246, 10.450, 81.839));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Roadhog));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(206.454, 9.476, 106.686));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Junkrat));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(177.794, 8.450, 59.920));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Moira));
+	}
+}
+
+rule("EichenwaldeStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Eichenwalde);
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(Mercy);
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(29.247, 9.451, -86.956));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Torbjörn));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(31.422, 11.740, -94.120));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zenyatta));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(56.644, 22.453, -67.911));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reinhardt));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(46.476, 7.041, -57.810));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Orisa));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(36.563, 6.701, -53.683));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Bastion));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(67.101, 6.175, -83.356));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Torbjörn));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(51.576, 19.497, -83.021));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zenyatta));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(103.242, 14.175, -110.079));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reinhardt));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(51.209, 8.175, -106.549));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Orisa));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(53.522, 19.175, -107.945));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Bastion));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(53.109, 13.171, -81.348));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Torbjörn));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(99.853, 14.117, -72.881));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Zenyatta));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(54.372, 8.175, -75.287));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reinhardt));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(63.877, 17.228, -61.019));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Orisa));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(54.385, 12.174, -120.654));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Bastion));
+	}
+}
+
+rule("BlizzWorldStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Blizzard World);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-32.425, -0.761, 147.708));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-79.043, 8.029, 95.656));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-67.548, 2.198, 141.848));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-80.375, 3.249, 113.297));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-78.748, 3.202, 154.236));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-77.150, 6.323, 66.284));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-33.531, 7.451, 90.691));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-81.688, 1.699, 61.723));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-21.384, 1.452, 60.450));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-99.838, 2.202, 86.777));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-49.251, 1.261, 99.040));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Reaper));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-50.605, 1.199, 142.730));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-22.492, 1.738, 113.342));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Brigitte));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-49.859, 1.258, 88.266));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Soldier: 76));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-42.835, 1.244, 133.664));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Sombra));
+	}
+}
+
+rule("HollyWoodStaticArraySecond")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Hollywood);
+		Global.MapSecondGeneration == True;
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(McCree);
+		Global.PackageStaticArray = Empty Array;
+	}
+}
+
+rule("HollyWoodStaticArrayFirst")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Hollywood);
+		Global.MapSecondGeneration == False;
+	}
+
+	actions
+	{
+		Global.BaseHero = Hero(Mercy);
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(40.248, 4.204, -51.680));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(McCree));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(38.927, 4.204, -55.599));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ashe));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-15.315, 3.181, -62.328));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Hanzo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(32.047, 3.306, -76.255));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(8.946, 12.459, -59.586));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(14.057, 3.053, -81.502));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(McCree));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(12.315, 12.198, -39.424));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ashe));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(11.748, 7.452, -57.612));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Hanzo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(6.599, 3.452, -62.504));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(16.634, 3.198, -40.509));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(6.077, 3.201, -10.256));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(McCree));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-18.770, 7.199, -53.418));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ashe));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(8.114, 7.276, -28.167));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Hanzo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-17.367, 3.202, -47.973));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(2.810, 7.201, -37.885));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(41.329, 3.054, -69.562));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(McCree));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(11.967, 4.734, -32.798));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Ashe));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(20.398, 3.077, -93.976));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Hanzo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(36.105, 4.202, -56.396));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(23.809, 8.249, -75.026));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Widowmaker));
+	}
+}
+
+rule("HanamuraStaticArray")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Current Map == Map(Hanamura);
+	}
+
+	actions
+	{
+		Global.PackageStaticArray = Empty Array;
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(3.244, 6.452, -70.802));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-13.917, 0.527, -87.857));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Hanzo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-33.112, 2.452, -82.289));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Doomfist));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(14.896, 8.459, -85.619));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-23.315, 0.449, -54.152));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-1.005, -0.551, -41.130));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(22.870, 4.393, -73.020));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Hanzo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(41.161, 3.451, -33.271));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Doomfist));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(12.790, 0.225, -45.275));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(45.645, -0.591, -58.335));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(9.952, 5.449, 17.313));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Genji));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(23.375, 7.451, -11.752));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Hanzo));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(13.876, 0.322, 32.373));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Doomfist));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-10.130, 8.450, -25.746));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Baptiste));
+		Modify Global Variable(PackageStaticArray, Append To Array, Vector(-14.229, 0.451, 9.100));
+		Modify Global Variable(PackageStaticArray, Append To Array, Hero(Tracer));
+	}
+}
+
+rule("PlayerJoinEvent")
+{
+	event
+	{
+		Player Joined Match;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		(Global.GameState == 4 || Global.GameState == 5) == True;
+	}
+
+	actions
+	{
+		Start Forcing Player To Be Hero(Event Player, Global.BaseHero);
+		Set Respawn Max Time(Event Player, 9999);
+		Disable Built-In Game Mode Respawning(Event Player);
+		Create HUD Text(Event Player, Custom String("waiting for next round"), Null, Null, Top, 1, Color(White), Color(White), Color(
+			White), Visible To and String, Default Visibility);
+		Start Damage Over Time(Event Player, Null, 10, 2000);
+		Disable Nameplates(Event Player, All Players(All Teams));
+		Disable Scoreboard(Event Player);
+	}
+}
+
+rule("ResetPlayers")
+{
+	event
+	{
+		Subroutine;
+		PlayerReset;
+	}
+
+	actions
+	{
+		Start Forcing Player To Be Hero(All Players(All Teams), Global.BaseHero);
+		All Players(All Teams).PackageCounterIndex = 0;
+		All Players(All Teams).PackageSelectedID = 0;
+		All Players(All Teams).PackageFoundState = 0;
+		Disable Nameplates(Event Player, All Players(All Teams));
+	}
+}
+
+rule("Setting")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	actions
+	{
+		"How many players before a hero spawns. if there are less players, no hero spawn-"
+		Global.PlayersPerHero = 5;
+		"how many players per traitor! always at leasts spawns one!"
+		Global.PlayersPerTraitor = 3;
+		"Terrorist starting timer"
+		Global.RoundTimerMinutesStart = 4;
+		"set default starting hero! (if no hero is specified by the map)"
+		Global.BaseHero = Global.BaseHero == 0 ? Hero(D.Va) : Global.BaseHero;
+		Wait(2.500, Ignore Condition);
+		Pause Match Time;
+		Global.GameState = 1;
+		disabled Set Match Time(3599);
+	}
+}
+
+rule("MatchTimeSet")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+	}
+
+	actions
+	{
+		Set Match Time(900);
+	}
+}
+
+rule("ServerInitalize")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	actions
+	{
+		Disable Built-In Game Mode Announcer;
+		Disable Built-In Game Mode Completion;
+		Disable Built-In Game Mode Music;
+		Disable Built-In Game Mode Scoring;
+		Global.RoundNumber = 1;
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"welcome in Hectic Hero Home, Overwatch's version of Trouble in ********* Town."), Top, 0, Color(White), Color(White), Color(
+			White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"In this gamemode, you have one of three roles: "), Top, 1, Color(White), Color(White), Color(White), Visible To and String,
+			Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"-------------------------------------------------------------------------------------------------------"), Top, 2, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Innocent: just normal everyday people. Their objective is to survive."), Top, 3, Color(White), Color(White), Color(
+			Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Traitor: Traitors to the cause. their objective is to kill all non-traitors."), Top, 4, Color(White), Color(White), Color(
+			Red), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Hero: a hero amongst the crowd. can gain clue's from bodies and their killers"), Top, 5, Color(White), Color(White), Color(
+			Turquoise), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"-------------------------------------------------------------------------------------------------------"), Top, 6, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"each round you begin with a role. the round keeps on going until:"), Top, 7, Color(White), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"all traitors have been eliminated or run out of time. all innocents and heroes get a point"), Top, 8, Color(White), Color(
+			White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"only traitors remain. all traitors get a point. every non-traitor kill grants a point too"), Top, 9, Color(White), Color(
+			White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"-------------------------------------------------------------------------------------------------------"), Top, 10, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Press interact to ready up for the match!"), Top, 11, Color(White), Color(White), Color(White), Visible To and String,
+			Default Visibility);
+		Create HUD Text(All Players(All Teams), Custom String("Players that are not ready:"), Null, Null, Right, 0, Color(Orange), Color(
+			Orange), Color(Orange), Visible To and String, Default Visibility);
+		Wait(8.250, Ignore Condition);
+		Disable Nameplates(All Players(All Teams), All Players(All Teams));
+		Disable Scoreboard(All Players(All Teams));
+	}
+}
+
+rule("RoundIncrease")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == -1;
+	}
+
+	actions
+	{
+		Global.RoundNumber += 1;
+		Global.GameState = 0.500;
+	}
+}
+
+rule("GuiInitialize")
+{
+	event
+	{
+		Subroutine;
+		CreateRoleHUD;
+	}
+
+	actions
+	{
+		Destroy All HUD Text;
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.TraitorList, Current Array Element) == True),
+			Custom String("Traitor"), Null, Custom String("Objective: kill all the innocents without getting caught!"), Top, 1, Color(Red),
+			Color(Red), Color(Red), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.HeroList, Current Array Element) == True),
+			Custom String("Hero"), Null, Custom String("Objective: you have the ability to search souls for clues!"), Top, 1, Color(
+			Turquoise), Color(Turquoise), Color(Turquoise), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.TraitorList, Current Array Element)
+			== False && Array Contains(Global.HeroList, Current Array Element) == False), Custom String("Innocent"), Null, Custom String(
+			"Objective: you are innocent... but there are traitors amongst you."), Top, 1, Color(Lime Green), Color(Lime Green), Color(
+			Lime Green), Visible To and String, Default Visibility);
+	}
+}
+
+rule("PlayerNotReadyGUI")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Global.GameState == 1;
+	}
+
+	actions
+	{
+		Create HUD Text(All Players(All Teams), Null, Null, Custom String("{0}", Event Player), Right, Index Of Array Value(All Players(
+			All Teams), Event Player) + 10, Color(Orange), Color(Orange), Color(Orange), Visible To and String, Default Visibility);
+		Event Player.PlayerReadyGUI = Last Text ID;
+	}
+}
+
+rule("GamePauseMatch")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 0.500;
+		disabled Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState != True) == Empty Array;
+	}
+
+	actions
+	{
+		Pause Match Time;
+		All Players(All Teams).PlayerReadyState = False;
+		Global.GameState = 1;
+		Call Subroutine(PlayerReset);
+		Destroy All HUD Text;
+		Wait(0.016, Ignore Condition);
+		Respawn(All Players(All Teams));
+		Allow Button(All Players(All Teams), Button(Interact));
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"welcome in Hectic Hero Home, Overwatch's version of Trouble in ********* Town."), Top, 0, Color(White), Color(White), Color(
+			White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"In this gamemode, you have one of three roles: "), Top, 1, Color(White), Color(White), Color(White), Visible To and String,
+			Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"-------------------------------------------------------------------------------------------------------"), Top, 2, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Innocent: just normal everyday people. Their objective is to survive."), Top, 3, Color(White), Color(White), Color(
+			Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Traitor: Traitors to the cause. their objective is to kill all non-traitors."), Top, 4, Color(White), Color(White), Color(
+			Red), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Hero: a hero amongst the crowd. can gain clue's from bodies and their killers"), Top, 5, Color(White), Color(White), Color(
+			Turquoise), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"-------------------------------------------------------------------------------------------------------"), Top, 6, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"each round you begin with a role. the round keeps on going until:"), Top, 7, Color(White), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"all traitors have been eliminated or run out of time. all innocents and heroes get a point"), Top, 8, Color(White), Color(
+			White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"only traitors remain. all traitors get a point. every non-traitor kill grants a point too"), Top, 9, Color(White), Color(
+			White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"-------------------------------------------------------------------------------------------------------"), Top, 10, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState == False), Null, Null, Custom String(
+			"Press interact to ready up for the match!"), Top, 11, Color(White), Color(White), Color(White), Visible To and String,
+			Default Visibility);
+		Create HUD Text(All Players(All Teams), Custom String("Players that are not ready:"), Null, Null, Right, 0, Color(Orange), Color(
+			Orange), Color(Orange), Visible To and String, Default Visibility);
+	}
+}
+
+rule("GameCheckPlayers")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Event Player.PlayerReadyState != True;
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Alive(Event Player) == True;
+		Global.GameState == 1;
+	}
+
+	actions
+	{
+		Wait(0.016, Ignore Condition);
+		Event Player.PlayerReadyState = True;
+		Small Message(All Players(All Teams), Custom String("{0} is ready!", Event Player));
+		Set Respawn Max Time(Event Player, 9999);
+		Start Forcing Player To Be Hero(Event Player, Global.BaseHero);
+		Disable Death Spectate Target HUD(Event Player);
+		Enable Death Spectate All Players(Event Player);
+		Destroy HUD Text(Event Player.PlayerReadyGUI);
+		Disable Nameplates(Event Player, All Players(All Teams));
+		Disable Scoreboard(Event Player);
+		Disable Game Mode HUD(Event Player);
+	}
+}
+
+rule("GameAllPlayersReady")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 1;
+		Filtered Array(All Players(All Teams), Current Array Element.PlayerReadyState != True) == Empty Array;
+	}
+
+	actions
+	{
+		Global.GameState = 1.500;
+		Skip If(Global.RoundNumber > 1, 1);
+		Unpause Match Time;
+		Destroy All HUD Text;
+	}
+}
+
+rule("GameInitialize")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 1.500;
+	}
+
+	actions
+	{
+		"prepare arrays!"
+		Global.TraitorList = Empty Array;
+		Global.HeroList = Empty Array;
+		Global.TraitorCount = Round To Integer(Count Of(All Players(All Teams)) / Global.PlayersPerTraitor, Down);
+		Global.HeroCount = Round To Integer(Count Of(All Players(All Teams)) / Global.PlayersPerHero, Down);
+		disabled Global.TraitorCount = 1;
+		disabled Global.HeroCount = 1;
+		Global.GameState = 2;
+	}
+}
+
+rule("HandOutRoles")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 2;
+	}
+
+	actions
+	{
+		Global.TraitorList = Randomized Array(Randomized Array(Randomized Array(All Players(All Teams))));
+		Global.TraitorList = Array Slice(Global.TraitorList, 0, Global.TraitorCount);
+		Skip If(Global.HeroCount == 0, 2);
+		Global.HeroList = Randomized Array(Randomized Array(Randomized Array(Filtered Array(All Players(All Teams), Array Contains(
+			Global.TraitorList, Current Array Element) == False))));
+		Global.HeroList = Array Slice(Global.HeroList, 0, Global.HeroCount);
+		Global.GameState = 3;
+	}
+}
+
+rule("ResetPickups")
+{
+	event
+	{
+		Subroutine;
+		ResetAllPickups;
+	}
+
+	actions
+	{
+		Abort If(Global.PackageGameplayPosition == 0);
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 4);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Global.PackageCurrentIndex = 0;
+		Global.PackageGameplayIDPrepare = 0;
+	}
+}
+
+rule("CreatePickups")
+{
+	event
+	{
+		Subroutine;
+		CreateAllPickups;
+	}
+
+	actions
+	{
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[0], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[0] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[0]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[0] + Vector(0, 0, 0), 2.001, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[0] == True), Orb, Color(Green),
+			Global.PackageGameplayPosition[0] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[1], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[1] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[1]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[1] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[1] == True), Orb, Color(Blue),
+			Global.PackageGameplayPosition[1] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[2], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[2] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[2]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[2] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[2] == True), Orb, Color(White),
+			Global.PackageGameplayPosition[2] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[3], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[3] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[3]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[3] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[3] == True), Orb, Color(Orange),
+			Global.PackageGameplayPosition[3] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[4], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[4] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[4]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[4] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[4] == True), Orb, Color(Purple),
+			Global.PackageGameplayPosition[4] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[5], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[5] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[5]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[5] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[5] == True), Orb, Color(Green),
+			Global.PackageGameplayPosition[5] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[6], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[6] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[6]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[6] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[6] == True), Orb, Color(Blue),
+			Global.PackageGameplayPosition[6] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[7], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[7] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[7]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[7] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[7] == True), Orb, Color(White),
+			Global.PackageGameplayPosition[7] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[8], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[8] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[8]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[8] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[8] == True), Orb, Color(Orange),
+			Global.PackageGameplayPosition[8] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[9], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[9] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[9]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[9] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[9] == True), Orb, Color(Purple),
+			Global.PackageGameplayPosition[9] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[10], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[10] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[10]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[10] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[10] == True), Orb, Color(Green),
+			Global.PackageGameplayPosition[10] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[11], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[11] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[11]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[11] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[11] == True), Orb, Color(Blue),
+			Global.PackageGameplayPosition[11] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[12], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[12] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[12]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[12] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[12] == True), Orb, Color(White),
+			Global.PackageGameplayPosition[12] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[13], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[13] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[13]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[13] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[13] == True), Orb, Color(Orange),
+			Global.PackageGameplayPosition[13] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[14], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[14] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[14]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[14] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[14] == True), Orb, Color(Purple),
+			Global.PackageGameplayPosition[14] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[15], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[15] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[15]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[15] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[15] == True), Orb, Color(Green),
+			Global.PackageGameplayPosition[15] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[16], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[16] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[16]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[16] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[16] == True), Orb, Color(Blue),
+			Global.PackageGameplayPosition[16] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[17], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[17] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[17]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[17] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[17] == True), Orb, Color(White),
+			Global.PackageGameplayPosition[17] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[18], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[18] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[18]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[18] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[18] == True), Orb, Color(Orange),
+			Global.PackageGameplayPosition[18] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Skip If(Global.PackageStaticArray[Global.PackageCurrentIndex] == 0, 5);
+		Global.PackageGameplayPosition[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex];
+		Global.PackageGameplayVisible[Global.PackageGameplayIDPrepare] = True;
+		Global.PackageGameplayHero[Global.PackageGameplayIDPrepare] = Global.PackageStaticArray[Global.PackageCurrentIndex + 1];
+		Create In-World Text(Filtered Array(Players Within Radius(Global.PackageGameplayPosition[19], 15, All Teams, Surfaces),
+			Global.PackageGameplayVisible[19] == True), Custom String("{0}", Hero Icon String(Global.PackageGameplayHero[19]),
+			Hero Icon String(Hero(Ana))), Global.PackageGameplayPosition[19] + Vector(0, 0, 0), 2, Do Not Clip,
+			Visible To Position and String, Color(Purple), Default Visibility);
+		Create Effect(Filtered Array(All Players(All Teams), Global.PackageGameplayVisible[19] == True), Orb, Color(Purple),
+			Global.PackageGameplayPosition[19] + Vector(0, 0, 0), 1, Visible To Position and Radius);
+		Global.PackageCurrentIndex += 2;
+		Global.PackageGameplayIDPrepare += 1;
+		Global.PackageCurrentIndex = 0;
+		Global.PackageGameplayIDPrepare = 0;
+	}
+}
+
+disabled rule("debug")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Game In Progress == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+	}
+
+	actions
+	{
+		Wait(2.250, Ignore Condition);
+		Global.GameState = -1;
+		Set Status(Event Player, Null, Rooted, 9999);
+		Disallow Button(Event Player, Button(Primary Fire));
+		Disallow Button(Event Player, Button(Secondary Fire));
+		Disallow Button(Event Player, Button(Ability 1));
+		Disallow Button(Event Player, Button(Ability 2));
+		Disallow Button(Event Player, Button(Interact));
+		Disallow Button(Event Player, Button(Jump));
+		Disallow Button(Event Player, Button(Crouch));
+		Disallow Button(Event Player, Button(Melee));
+		Disallow Button(Event Player, Button(Reload));
+		Disallow Button(Event Player, Button(Ultimate));
+	}
+}
+
+rule("PickupPickups")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Game In Progress == True;
+		Count Of(Global.PackageGameplayPosition) != 0;
+		(Global.GameState == 4 || Global.GameState == 5) == True;
+		Health(Event Player) >= Max Health(Event Player);
+		Is Button Held(Event Player, Button(Crouch)) == False;
+		Event Player.PlayerPressedInteractCrouch == False;
+	}
+
+	actions
+	{
+		Event Player.PackageFoundState = False;
+		For Player Variable(Event Player, PackageCounterIndex, 0, Count Of(Global.PackageGameplayPosition) + 0, 1);
+			If(Distance Between(Global.PackageGameplayPosition[Event Player.PackageCounterIndex], Position Of(Event Player)) <= 3);
+				Skip If(Global.PackageGameplayHero[Event Player.PackageCounterIndex] == Hero Of(Event Player), 9);
+				Skip If(Global.PackageGameplayVisible[Event Player.PackageCounterIndex] != True, 8);
+				Global.PackageGameplayVisible[Event Player.PackageCounterIndex] = False;
+				If(Hero Of(Event Player) != Global.BaseHero);
+					Global.PackageGameplayPosition[Event Player.PackageSelectedID] = Position Of(Event Player) + Vector(0, 1.600, 0);
+					Global.PackageGameplayVisible[Event Player.PackageSelectedID] = True;
+				End;
+				Event Player.PackageSelectedID = Event Player.PackageCounterIndex;
+				Event Player.PackageCounterIndex = Count Of(Global.PackageGameplayPosition);
+				Event Player.PackageFoundState = True;
+			End;
+		End;
+		Event Player.PackageCounterIndex = 0;
+		"1 = package found"
+		If(Event Player.PackageFoundState);
+			Start Forcing Player To Be Hero(Event Player, Global.PackageGameplayHero[Event Player.PackageSelectedID]);
+		"2 = no package found"
+		Else;
+			Small Message(Event Player, Custom String("pick up failed"));
+		End;
+		Event Player.PlayerPressedInteractCrouch = True;
+	}
+}
+
+rule("PickupPickupsFail")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Game In Progress == True;
+		Count Of(Global.PackageGameplayPosition) != 0;
+		Health(Event Player) < Max Health(Event Player);
+		(Global.GameState == 4 || Global.GameState == 5) == True;
+		Event Player.PlayerPressedInteractCrouch == False;
+	}
+
+	actions
+	{
+		Small Message(Event Player, Custom String("health must be full to change hero"));
+		Event Player.PlayerPressedInteractCrouch = True;
+	}
+}
+
+rule("DropPickup")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Game In Progress == True;
+		Count Of(Global.PackageGameplayPosition) != 0;
+		(Global.GameState == 4 || Global.GameState == 5) == True;
+		Health(Event Player) >= Max Health(Event Player);
+		Hero Of(Event Player) != Global.BaseHero;
+		Event Player.PlayerPressedInteractCrouch == False;
+		Is On Ground(Event Player) == True;
+	}
+
+	actions
+	{
+		Start Forcing Player To Be Hero(Event Player, Global.BaseHero);
+		Global.PackageGameplayPosition[Event Player.PackageSelectedID] = Position Of(Event Player) + Vector(0, 1.600, 0);
+		Global.PackageGameplayVisible[Event Player.PackageSelectedID] = True;
+		Event Player.PlayerPressedInteractCrouch = True;
+	}
+}
+
+rule("CountdownOnRound2<")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 3;
+	}
+
+	actions
+	{
+		If(Count Of(Global.PackageGameplayPosition) == 0);
+			"create all soul orbs at start of game"
+			Call Subroutine(CreateAllSoulOrbs);
+			Call Subroutine(CreateAllPickups);
+		Else;
+			Call Subroutine(ResetAllPickups);
+		End;
+		If(Global.RoundNumber > 1);
+			disabled Big Message(All Players(All Teams), Custom String("5"));
+			disabled Wait(1, Ignore Condition);
+			disabled Big Message(All Players(All Teams), Custom String("4"));
+			disabled Wait(1, Ignore Condition);
+			Big Message(All Players(All Teams), Custom String("get ready"));
+			Wait(2, Ignore Condition);
+		End;
+		Global.GameState = 4;
+		Unpause Match Time;
+	}
+}
+
+rule("StartRound")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 4;
+		Is Game In Progress == True;
+	}
+
+	actions
+	{
+		Set Status(All Players(All Teams), Null, Invincible, 19);
+		Pause Match Time;
+		Big Message(All Players(All Teams), Custom String("Round {0}", Global.RoundNumber));
+		Small Message(All Players(All Teams), Custom String("press interact to pick up heroes"));
+		Clear Status(All Players(All Teams), Rooted);
+		Allow Button(All Players(All Teams), Button(Primary Fire));
+		Allow Button(All Players(All Teams), Button(Secondary Fire));
+		Allow Button(All Players(All Teams), Button(Ability 1));
+		Allow Button(All Players(All Teams), Button(Ability 2));
+		Allow Button(All Players(All Teams), Button(Ultimate));
+		Allow Button(All Players(All Teams), Button(Crouch));
+		Allow Button(All Players(All Teams), Button(Melee));
+		Allow Button(All Players(All Teams), Button(Reload));
+		Allow Button(All Players(All Teams), Button(Jump));
+		Create HUD Text(All Living Players(All Teams), Custom String("Role Unknown"), Null, Null, Top, 1, Color(White), Color(White),
+			Color(White), Visible To and String, Default Visibility);
+		Global.TerroristTimerMinutes = 0;
+		Create HUD Text(All Players(All Teams), Null, Custom String("use the interact key to pick up Hero Orbs"), Null, Right, 108, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Custom String("crouch and interact to drop hero orb"), Null, Right, 109, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Custom String("cannot swap hero orbs when damaged"), Null, Right, 110, Color(White),
+			Color(White), Color(White), Visible To and String, Default Visibility);
+		Global.TerroristTimerSeconds = 0;
+		Small Message(All Players(All Teams), Custom String("Roles revealed in 20 seconds..."));
+		Create HUD Text(All Players(All Teams), Custom String("Traitor Timer: {0}:{1}", Global.TerroristTimerMinutes,
+			Global.TerroristTimerSeconds <= 9 ? Custom String("0{0}", Global.TerroristTimerSeconds) : Global.TerroristTimerSeconds),
+			Custom String("every death adds 1 minute to the timer."), Custom String("if timer runs out, innocents win."), Top, 0, Color(
+			Orange), Color(Orange), Color(Orange), Visible To and String, Default Visibility);
+		Wait(18, Ignore Condition);
+		Respawn(All Dead Players(All Teams));
+		Set Status(All Players(All Teams), Null, Invincible, 1);
+		Wait(1, Ignore Condition);
+		While(Global.TerroristTimerMinutes < Global.RoundTimerMinutesStart);
+			Wait(0.100, Ignore Condition);
+		End;
+		Global.GameState = 5;
+		Small Message(All Players(All Teams), Custom String("Roles are revealed!"));
+		Big Message(All Players(All Teams), Custom String("Round Start!"));
+		Clear Status(All Players(All Teams), Invincible);
+		Call Subroutine(CreateRoleHUD);
+		Global.RevealIcons = True;
+		Create HUD Text(All Players(All Teams), Custom String("Traitor Timer: {0}:{1}", Global.TerroristTimerMinutes,
+			Global.TerroristTimerSeconds <= 9 ? Custom String("0{0}", Global.TerroristTimerSeconds) : Global.TerroristTimerSeconds),
+			Custom String("every death adds 1 minute to the timer."), Custom String("if timer runs out, innocents win."), Top, 0, Color(
+			Orange), Color(Orange), Color(Orange), Visible To and String, Default Visibility);
+		Unpause Match Time;
+		Global.TerroristTimerPreviousMatchTime = Round To Integer(Match Time - 2, Up);
+		Create HUD Text(All Players(All Teams), Null, Custom String("use the interact key to pick up Hero Orbs"), Null, Right, -30, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Custom String("crouch and interact to drop hero orb"), Null, Right, -29, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(All Players(All Teams), Null, Custom String("cannot swap hero orbs when damaged"), Null, Right, -28, Color(White),
+			Color(White), Color(White), Visible To and String, Default Visibility);
+		Call Subroutine(ResetAllOrbHUDS);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.HeroList, Current Array Element)), Null,
+			Custom String("The hero can crouch by murder sites to gain clues"), Null, Right, -27, Color(White), Color(Lime Green), Color(
+			White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.HeroList, Current Array Element)), Null,
+			Custom String("Clues include time of death, last seen person, and the role of the victim."), Null, Right, -26, Color(White),
+			Color(Lime Green), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.HeroList, Current Array Element)), Null,
+			Custom String("warning: you are unable to move or attack when searching for clues"), Null, Right, -25, Color(White), Color(
+			Lime Green), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.TraitorList, Current Array Element)), Null,
+			Custom String("Traitors can see other traitors! work together to murder all others"), Null, Right, -27, Color(White), Color(
+			Red), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.TraitorList, Current Array Element)), Null,
+			Custom String("if there is a hero amongst the crowd, they can gain clues from murder sites"), Null, Right, -26, Color(White),
+			Color(Red), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Living Players(All Teams), Array Contains(Global.TraitorList, Current Array Element)), Null,
+			Custom String("Innocents are unaware of your role. keep it that way"), Null, Right, -25, Color(White), Color(Red), Color(
+			White), Visible To and String, Default Visibility);
+	}
+}
+
+rule("TerroristWinChecker")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 5;
+		Filtered Array(All Living Players(All Teams), Array Contains(Global.TraitorList, Current Array Element) == False) == Empty Array;
+	}
+
+	actions
+	{
+		Global.TerroristWon = True;
+		Wait(2, Abort When False);
+		Global.GameState = 6;
+	}
+}
+
+rule("InnocentWinChecker")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 5;
+		Filtered Array(All Living Players(All Teams), Array Contains(Global.TraitorList, Current Array Element) == True) == Empty Array;
+	}
+
+	actions
+	{
+		Global.InnocentsWon = True;
+		Wait(2, Abort When False);
+		Global.GameState = 6;
+	}
+}
+
+rule("TerroristRanOutChecker")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 5;
+		(Global.TerroristTimerMinutes == 0 && Global.TerroristTimerSeconds == 0) == True;
+	}
+
+	actions
+	{
+		Global.InnocentsWon = True;
+		Wait(0.016, Ignore Condition);
+		Global.GameState = 6;
+	}
+}
+
+rule("PlayerLocker")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 6;
+	}
+
+	actions
+	{
+		Set Status(All Players(All Teams), Null, Rooted, 9999);
+		Disallow Button(All Players(All Teams), Button(Primary Fire));
+		Global.GameState = 7;
+		Disallow Button(All Players(All Teams), Button(Secondary Fire));
+		Disallow Button(All Players(All Teams), Button(Ability 1));
+		Disallow Button(All Players(All Teams), Button(Ability 2));
+		Disallow Button(All Players(All Teams), Button(Ultimate));
+		Disallow Button(All Players(All Teams), Button(Interact));
+		Disallow Button(All Players(All Teams), Button(Jump));
+		Disallow Button(All Players(All Teams), Button(Crouch));
+		Disallow Button(All Players(All Teams), Button(Melee));
+		Disallow Button(All Players(All Teams), Button(Reload));
+	}
+}
+
+rule("RoundEnd")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 7;
+	}
+
+	actions
+	{
+		"same value. no one won"
+		If(Global.TerroristWon == Global.InnocentsWon);
+			Big Message(All Players(All Teams), Custom String("draw"));
+		Else If(Global.TerroristWon);
+			Modify Player Score(Global.TraitorList, 1);
+			Big Message(All Players(All Teams), Custom String("traitors won"));
+		Else If(Global.InnocentsWon);
+			Modify Player Score(Filtered Array(All Players(All Teams), Array Contains(Global.TraitorList, Current Array Element) == False), 1);
+			Big Message(All Players(All Teams), Custom String("innocents won"));
+		End;
+		For Global Variable(TraitorCounter, 0, Count Of(Global.TraitorList), 1);
+			Wait(0.016, Ignore Condition);
+			Global.TerroristName = Global.TraitorList[Global.TraitorCounter];
+			Wait(0.016, Ignore Condition);
+			Small Message(All Players(All Teams), Custom String("{0} was a traitor", Global.TerroristName));
+		End;
+		Wait(2, Ignore Condition);
+		Global.GameState = 8;
+		Global.RevealIcons = False;
+	}
+}
+
+rule("CheckForWinner")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 8;
+	}
+
+	actions
+	{
+		If(Filtered Array(All Players(All Teams), Score Of(Current Array Element) >= 10) != Empty Array);
+			Declare Player Victory(Filtered Array(All Players(All Teams), Score Of(Current Array Element) >= 10));
+		End;
+		If(Match Time == 0);
+			Declare Player Victory(Sorted Array(All Players(All Teams), Score Of(Current Array Element))[Count Of(All Players(All Teams))
+				- 1]);
+		Else;
+			Global.GameState = 9;
+		End;
+	}
+}
+
+rule("resetServer")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 9;
+	}
+
+	actions
+	{
+		Global.TraitorList = Empty Array;
+		Global.HeroList = Empty Array;
+		Global.TraitorCount = 0;
+		Global.HeroCount = 0;
+		Global.PackageGameplayVisible = Empty Array;
+		While(Count Of(Global.PackageGameplayVisible) < Count Of(Global.PackageGameplayPosition));
+			Modify Global Variable(PackageGameplayVisible, Append To Array, False);
+		End;
+		Global.ClueDropVisible = Empty Array;
+		While(Count Of(Global.ClueDropVisible) < Count Of(Global.ClueDropPosition));
+			Modify Global Variable(ClueDropVisible, Append To Array, False);
+		End;
+		Global.GameState = -1;
+		Global.TerroristWon = False;
+		Global.InnocentsWon = False;
+	}
+}
+
+rule("RevealTerroristIcons")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Global.RevealIcons == True;
+		Array Contains(Global.TraitorList, Event Player) == True;
+	}
+
+	actions
+	{
+		Create Icon(Filtered Array(Global.TraitorList, Event Player != Current Array Element && Is Alive(Event Player) == True && Is Alive(
+			Current Array Element) == True), Eye Position(Event Player) + Vector(0, 0.200, 0), Skull, Visible To and Position, Color(Red),
+			False);
+	}
+}
+
+rule("RevealHeroIcons")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Global.RevealIcons == True;
+		Array Contains(Global.HeroList, Event Player) == True;
+	}
+
+	actions
+	{
+		Create Icon(Filtered Array(All Players(All Teams), Event Player != Current Array Element && Is Alive(Event Player)
+			== True && Is Alive(Event Player) == True), Eye Position(Event Player) + Vector(0, 0.200, 0), Halo, Visible To and Position,
+			Color(Lime Green), False);
+	}
+}
+
+rule("DestroyIcons")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.RevealIcons == False;
+	}
+
+	actions
+	{
+		Destroy All Icons;
+	}
+}
+
+rule("DebugMode")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Event Player == Host Player;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Is Game In Progress == False;
+	}
+
+	actions
+	{
+		Global.GameState = 69;
+		Wait(0.250, Ignore Condition);
+		All Players(All Teams).PlayerReadyState = True;
+		Unpause Match Time;
+		Create HUD Text(All Players(All Teams), Custom String("DEBUG MODE"), Null, Null, Right, 10, Color(Aqua), Color(Aqua), Color(Aqua),
+			Visible To and String, Default Visibility);
+		Small Message(All Players(All Teams), Custom String("host has activated debug mode"));
+		Wait(6.250, Ignore Condition);
+		Pause Match Time;
+		Call Subroutine(CreateAllPickups);
+		Create HUD Text(All Players(All Teams), Custom String("Traitor Timer: {0}:{1}", Global.TerroristTimerMinutes % 3600 / 60,
+			Global.TerroristTimerSeconds), Null, Custom String("if timer runs out, innocents win."), Top, 0, Color(Orange), Color(Orange),
+			Color(Red), Visible To and String, Default Visibility);
+		Call Subroutine(ResetAllOrbHUDS);
+		Call Subroutine(CreateAllSoulOrbs);
+		Wait(5.250, Ignore Condition);
+		Global.TraitorList = Array(Custom String("KittySoldier"), Hero(Ana), 5);
+		For Global Variable(TraitorCounter, 0, Count Of(Global.TraitorList), 1);
+			disabled Wait(0.016, Ignore Condition);
+			Global.TerroristName = Global.TraitorList[Global.TraitorCounter];
+			Wait(0.016, Ignore Condition);
+			Small Message(All Players(All Teams), Custom String("{0} was a traitor", Global.TerroristName));
+		End;
+	}
+}
+
+rule("SombraBreakInvis")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Sombra;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		Is Using Ability 1(Event Player) == True;
+	}
+
+	actions
+	{
+		Wait(6, Abort When False);
+		Press Button(Event Player, Button(Ability 1));
+	}
+}
+
+rule("BriditteDisableHealing")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Hero Of(Event Player) == Hero(Brigitte);
+		Is Alive(Event Player) == True;
+	}
+
+	actions
+	{
+		Set Healing Dealt(Event Player, 0);
+	}
+}
+
+rule("BriditteDisableHealingreset")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Hero Of(Event Player) != Hero(Brigitte);
+	}
+
+	actions
+	{
+		Set Healing Dealt(Event Player, 100);
+	}
+}
+
+rule("TerroristTimerTick")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 5;
+		(Global.TerroristTimerMinutes == 0 && Global.TerroristTimerSeconds == 0) == False;
+		Round To Integer(Match Time, Up) <= Round To Integer(Global.TerroristTimerPreviousMatchTime, Up);
+	}
+
+	actions
+	{
+		Global.TerroristTimerPreviousMatchTime = Round To Integer(Match Time - 1, Up);
+		If(Global.TerroristTimerSeconds <= 0);
+			Global.TerroristTimerMinutes -= 1;
+			Global.TerroristTimerSeconds = 59;
+		Else;
+			Global.TerroristTimerSeconds -= 1;
+		End;
+	}
+}
+
+rule("TerroristTimerTickAfterMatchTimerRanOut")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Global.GameState == 5;
+		(Global.TerroristTimerMinutes == 0 && Global.TerroristTimerSeconds == 0) == False;
+		Match Time == 0;
+	}
+
+	actions
+	{
+		Wait(1, Abort When False);
+		If(Global.TerroristTimerSeconds <= 0);
+			Global.TerroristTimerMinutes -= 1;
+			Global.TerroristTimerSeconds = 59;
+		Else;
+			Global.TerroristTimerSeconds -= 1;
+		End;
+		Loop If Condition Is True;
+	}
+}
+
+rule("TerroristTimerIncreaseOnKill")
+{
+	event
+	{
+		Player Died;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Victim != Attacker;
+	}
+
+	actions
+	{
+		For Player Variable(Event Player, TerroristTimerForLoopVariable, 0, 60, 1);
+			Wait(0.001, Ignore Condition);
+			If(Global.TerroristTimerSeconds >= 59);
+				Global.TerroristTimerMinutes += 1;
+				Global.TerroristTimerSeconds = 0;
+			Else;
+				Global.TerroristTimerSeconds += 1;
+			End;
+		End;
+	}
+}
+
+rule("PlayerReleasedCrouchInteract")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		Is Button Held(Event Player, Button(Interact)) == False;
+		Is Button Held(Event Player, Button(Crouch)) == False;
+	}
+
+	actions
+	{
+		Wait(0.050, Abort When False);
+		Event Player.PlayerPressedInteractCrouch = False;
+	}
+}
+
+rule("DebugUltKeyOrbIndex")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Is Game In Progress == True;
+		Count Of(Global.PackageGameplayPosition) != 0;
+		Global.GameState == 69;
+	}
+
+	actions
+	{
+		Event Player.PackageFoundState = False;
+		For Player Variable(Event Player, PackageCounterIndex, 0, Count Of(Global.PackageGameplayPosition) + 0, 1);
+			If(Distance Between(Global.PackageGameplayPosition[Event Player.PackageCounterIndex], Position Of(Event Player)) <= 3);
+				Event Player.PackageSelectedID = Event Player.PackageCounterIndex;
+				Event Player.PackageCounterIndex = Count Of(Global.PackageGameplayPosition);
+				Event Player.PackageFoundState = True;
+			End;
+		End;
+		Event Player.PackageCounterIndex = 0;
+		"1 = package found"
+		If(Event Player.PackageFoundState);
+			Small Message(All Players(All Teams), Custom String("index = {0}", Event Player.PackageSelectedID));
+		"2 = no package found"
+		Else;
+			Small Message(Event Player, Custom String("pick up failed"));
+		End;
+		Event Player.PlayerPressedInteractCrouch = True;
+	}
+}
+
+rule("DebugClueDrop")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Global.GameState == 69;
+		Is Game In Progress == True;
+		Is Button Held(Event Player, Button(Interact)) == True;
+	}
+
+	actions
+	{
+		Event Player.LastSeenPlayer = 69;
+		Call Subroutine(DropSoulOrb);
+		Unpause Match Time;
+		Global.ClueDropInvestigationProgress[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = 100;
+	}
+}
+
+rule("DropSoulOrb")
+{
+	event
+	{
+		Subroutine;
+		DropSoulOrb;
+	}
+
+	actions
+	{
+		If(Index Of Array Value(Global.ClueDropPlayerArray, 0) == -1);
+			"add player to drop orb array"
+			Modify Global Variable(ClueDropPlayerArray, Append To Array, Event Player);
+		End;
+		Wait(0.216, Ignore Condition);
+		disabled Global.ClueDropPosition[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = Position Of(Event Player) + Vector(0,
+			0.200, 0);
+		Global.ClueDropPosition[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = Nearest Walkable Position(Position Of(
+			Event Player)) + Vector(0, 0.200, 0);
+		Global.ClueDropVisible[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = True;
+		Global.ClueDropTimeOfDeathMinute[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = Match Time;
+		Global.ClueDropLastSeenPerson[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = Event Player.LastSeenPlayer;
+		Global.ClueDropRoleString[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = Array Contains(Global.TraitorList,
+			Event Player) ? Custom String("Traitor.") : (Array Contains(Global.HeroList, Event Player) ? Custom String("Hero.")
+			: Custom String("Innocent."));
+		Global.ClueDropInvestigationProgress[Index Of Array Value(Global.ClueDropPlayerArray, Event Player)] = 0;
+	}
+}
+
+rule("ResetAllSoulOrbsHUDS")
+{
+	event
+	{
+		Subroutine;
+		ResetAllOrbHUDS;
+	}
+
+	actions
+	{
+		For Global Variable(ClueDropForLoopVariable, 0, 12, 1);
+			Global.ClueDropLastSeenPerson[Global.ClueDropForLoopVariable] = Null;
+			Global.ClueDropRoleString[Global.ClueDropForLoopVariable] = Null;
+			Global.ClueDropTimeOfDeathMinute[Global.ClueDropForLoopVariable] = 0;
+			Global.ClueDropInvestigationProgress[Global.ClueDropForLoopVariable] = 0;
+			Global.ClueDropPlayerArray = Empty Array;
+			Global.ClueDropPosition[Global.ClueDropForLoopVariable] = Vector(0, 0, 0);
+			Global.ClueDropVisible[Global.ClueDropForLoopVariable] = False;
+		End;
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[0], 3, All Teams, Off),
+			Global.ClueDropVisible[0] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[0]), Null, Null, Right, 16,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[0], 3, All Teams, Off),
+			Global.ClueDropVisible[0] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[0] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[0] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[0] - Match Time) / 60 % 60, Down))), Right, 17, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[0], 3, All Teams, Off),
+			Global.ClueDropVisible[0] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[0] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 18, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[0], 3, All Teams, Off),
+			Global.ClueDropVisible[0] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[0] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[0]), Right, 19, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[1], 3, All Teams, Off),
+			Global.ClueDropVisible[1] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[1]), Null, Null, Right, 20,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[1], 3, All Teams, Off),
+			Global.ClueDropVisible[1] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[1] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[1] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[1] - Match Time) / 60 % 60, Down))), Right, 21, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[1], 3, All Teams, Off),
+			Global.ClueDropVisible[1] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[1] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 22, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[1], 3, All Teams, Off),
+			Global.ClueDropVisible[1] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[1] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[1]), Right, 23, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[2], 3, All Teams, Off),
+			Global.ClueDropVisible[2] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[2]), Null, Null, Right, 24,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[2], 3, All Teams, Off),
+			Global.ClueDropVisible[2] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[2] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[2] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[2] - Match Time) / 60 % 60, Down))), Right, 25, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[2], 3, All Teams, Off),
+			Global.ClueDropVisible[2] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[2] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 26, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[2], 3, All Teams, Off),
+			Global.ClueDropVisible[2] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[2] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[2]), Right, 27, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[3], 3, All Teams, Off),
+			Global.ClueDropVisible[3] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[3]), Null, Null, Right, 28,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[3], 3, All Teams, Off),
+			Global.ClueDropVisible[3] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[3] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[3] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[3] - Match Time) / 60 % 60, Down))), Right, 29, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[3], 3, All Teams, Off),
+			Global.ClueDropVisible[3] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[3] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 30, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[3], 3, All Teams, Off),
+			Global.ClueDropVisible[3] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[3] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[3]), Right, 31, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[4], 3, All Teams, Off),
+			Global.ClueDropVisible[4] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[4]), Null, Null, Right, 32,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[4], 3, All Teams, Off),
+			Global.ClueDropVisible[4] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[4] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[4] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[4] - Match Time) / 60 % 60, Down))), Right, 33, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[4], 3, All Teams, Off),
+			Global.ClueDropVisible[4] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[4] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 34, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[4], 3, All Teams, Off),
+			Global.ClueDropVisible[4] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[4] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[4]), Right, 35, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[5], 3, All Teams, Off),
+			Global.ClueDropVisible[5] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[5]), Null, Null, Right, 36,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[5], 3, All Teams, Off),
+			Global.ClueDropVisible[5] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[5] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[5] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[5] - Match Time) / 60 % 60, Down))), Right, 37, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[5], 3, All Teams, Off),
+			Global.ClueDropVisible[5] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[5] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 38, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[5], 3, All Teams, Off),
+			Global.ClueDropVisible[5] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[5] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[5]), Right, 39, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[6], 3, All Teams, Off),
+			Global.ClueDropVisible[6] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[6]), Null, Null, Right, 40,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[6], 3, All Teams, Off),
+			Global.ClueDropVisible[6] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[6] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[6] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[6] - Match Time) / 60 % 60, Down))), Right, 41, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[6], 3, All Teams, Off),
+			Global.ClueDropVisible[6] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[6] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 42, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[6], 3, All Teams, Off),
+			Global.ClueDropVisible[6] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[6] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[6]), Right, 43, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[7], 3, All Teams, Off),
+			Global.ClueDropVisible[7] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[7]), Null, Null, Right, 44,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[7], 3, All Teams, Off),
+			Global.ClueDropVisible[7] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[7] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[7] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[7] - Match Time) / 60 % 60, Down))), Right, 45, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[7], 3, All Teams, Off),
+			Global.ClueDropVisible[7] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[7] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 46, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[7], 3, All Teams, Off),
+			Global.ClueDropVisible[7] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[7] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[7]), Right, 47, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[8], 3, All Teams, Off),
+			Global.ClueDropVisible[8] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[8]), Null, Null, Right, 48,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[8], 3, All Teams, Off),
+			Global.ClueDropVisible[8] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[8] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[8] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[8] - Match Time) / 60 % 60, Down))), Right, 49, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[8], 3, All Teams, Off),
+			Global.ClueDropVisible[8] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[8] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 50, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[8], 3, All Teams, Off),
+			Global.ClueDropVisible[8] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[8] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[8]), Right, 51, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[9], 3, All Teams, Off),
+			Global.ClueDropVisible[9] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[9]), Null, Null, Right, 52,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[9], 3, All Teams, Off),
+			Global.ClueDropVisible[9] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[9] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[9] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[9] - Match Time) / 60 % 60, Down))), Right, 53, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[9], 3, All Teams, Off),
+			Global.ClueDropVisible[9] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[9] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 54, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[9], 3, All Teams, Off),
+			Global.ClueDropVisible[9] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[9] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[9]), Right, 55, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[10], 3, All Teams, Off),
+			Global.ClueDropVisible[10] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[10]), Null, Null, Right, 56,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[10], 3, All Teams, Off),
+			Global.ClueDropVisible[10] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[10] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[10] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[10] - Match Time) / 60 % 60, Down))), Right, 57, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[10], 3, All Teams, Off),
+			Global.ClueDropVisible[10] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[10] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 58, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[10], 3, All Teams, Off),
+			Global.ClueDropVisible[10] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[10] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[10]), Right, 59, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Wait(0.016, Ignore Condition);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[11], 3, All Teams, Off),
+			Global.ClueDropVisible[11] == True), Custom String("murder case: {0}", Global.ClueDropPlayerArray[11]), Null, Null, Right, 60,
+			Color(Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[11], 3, All Teams, Off),
+			Global.ClueDropVisible[11] == True), Null, Null, Custom String("Time of death: {0}",
+			Global.ClueDropInvestigationProgress[11] <= 33 ? Custom String("Unknown") : Custom String("{0} Minute(s) Ago",
+			Round To Integer((Global.ClueDropTimeOfDeathMinute[11] - Match Time) / 60 % 60, Down) == 0 ? Custom String("<1")
+			: Round To Integer((Global.ClueDropTimeOfDeathMinute[11] - Match Time) / 60 % 60, Down))), Right, 61, Color(Lime Green), Color(
+			Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[11], 3, All Teams, Off),
+			Global.ClueDropVisible[11] == True), Null, Null, Custom String("Last seen player: {0}",
+			Global.ClueDropInvestigationProgress[11] <= 66 ? Custom String("Unknown") : Global.ClueDropLastSeenPerson), Right, 62, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(Players Within Radius(Global.ClueDropPosition[11], 3, All Teams, Off),
+			Global.ClueDropVisible[11] == True), Null, Null, Custom String("Player Role: {0}",
+			Global.ClueDropInvestigationProgress[11] <= 99 ? Custom String("Unknown") : Global.ClueDropRoleString[11]), Right, 63, Color(
+			Lime Green), Color(Lime Green), Color(Lime Green), Visible To and String, Default Visibility);
+	}
+}
+
+rule("CreateAllSoulOrbs")
+{
+	event
+	{
+		Subroutine;
+		CreateAllSoulOrbs;
+	}
+
+	actions
+	{
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[0] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[0], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[1] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[1], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[2] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[2], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[3] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[3], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[4] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[4], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[5] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[5], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[6] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[6], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[7] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[7], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[8] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[8], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[9] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[9], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[10] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[10], 1, Visible To Position and Radius);
+		Create Effect(Filtered Array(All Players(All Teams), Global.ClueDropVisible[11] == True), Cloud, Color(Red),
+			Global.ClueDropPosition[11], 1, Visible To Position and Radius);
+	}
+}
+
+rule("Investigation")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		disabled Global.GameState == 69;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Event Player.HeroInvestigating == False;
+		(Global.GameState == 5 || Global.GameState == 5) == True;
+		Array Contains(Global.HeroList, Event Player) == True;
+	}
+
+	actions
+	{
+		Event Player.HeroNoClueFound = True;
+		For Player Variable(Event Player, HeroInvestigateIndex, 0, Count Of(Global.ClueDropPosition), 1);
+			"check if clue is even visible"
+			If(Global.ClueDropVisible[Event Player.HeroInvestigateIndex] == False);
+				Continue;
+			"check if clue is too far"
+			Else If(Distance Between(Global.ClueDropPosition[Event Player.HeroInvestigateIndex], Position Of(Event Player)) > 3);
+				Continue;
+			"check if clue is fully checked already"
+			Else If(Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex] >= 100);
+				Continue;
+			End;
+			"a clue has been found! starting investigate process"
+			Event Player.HeroInvestigating = True;
+			Event Player.HeroNoClueFound = False;
+			Break;
+		End;
+		Abort If(Event Player.HeroNoClueFound);
+		Create HUD Text(Event Player, Custom String("Investigating: {0}%",
+			Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex]), Null, Null, Top, 10, Color(Lime Green), Color(White),
+			Color(White), Visible To and String, Default Visibility);
+		Event Player.HeroInvestigationHUD = Last Text ID;
+		If(Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex] < 100);
+			Disallow Button(Event Player, Button(Primary Fire));
+			Disallow Button(Event Player, Button(Secondary Fire));
+			Disallow Button(Event Player, Button(Ability 1));
+			Disallow Button(Event Player, Button(Ability 2));
+			Disallow Button(Event Player, Button(Melee));
+			Disallow Button(Event Player, Button(Reload));
+			Disallow Button(Event Player, Button(Jump));
+			Disallow Button(Event Player, Button(Interact));
+			Set Move Speed(Event Player, 0);
+		End;
+		While(Event Player.HeroInvestigating);
+			Wait(0.060, Ignore Condition);
+			If(Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex] >= 100);
+				Break;
+			End;
+			Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex] += 1;
+			If(Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex] == 33);
+				Small Message(Event Player, Custom String("Time of death discovered."));
+			Else If(Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex] == 66);
+				Small Message(Event Player, Custom String("Last seen player discovered."));
+			Else If(Global.ClueDropInvestigationProgress[Event Player.HeroInvestigateIndex] == 99);
+				Small Message(Event Player, Custom String("Role discovered."));
+			End;
+		End;
+	}
+}
+
+rule("InvestigationCancel")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		disabled Global.GameState == 69;
+		Is Button Held(Event Player, Button(Crouch)) == False;
+		Event Player.HeroInvestigating == True;
+		(Global.GameState == 5 || Global.GameState == 5) == True;
+		Array Contains(Global.HeroList, Event Player) == True;
+	}
+
+	actions
+	{
+		Destroy HUD Text(Event Player.HeroInvestigationHUD);
+		Event Player.HeroInvestigating = False;
+		Allow Button(Event Player, Button(Primary Fire));
+		Allow Button(Event Player, Button(Secondary Fire));
+		Allow Button(Event Player, Button(Ability 1));
+		Allow Button(Event Player, Button(Ability 2));
+		Allow Button(Event Player, Button(Jump));
+		Allow Button(Event Player, Button(Crouch));
+		Allow Button(Event Player, Button(Melee));
+		Allow Button(Event Player, Button(Reload));
+		Set Move Speed(Event Player, 100);
+	}
+}
+
+rule("ViewTick")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Alive(Event Player) == True;
+		Is Dummy Bot(Event Player) == False;
+		"are there players in view?"
+		Players in View Angle(Event Player, All Teams, 45) != Empty Array;
+		"are there players in range?"
+		Filtered Array(Players Within Radius(Eye Position(Event Player), 20, All Teams, Surfaces), Current Array Element != Event Player)
+			!= Empty Array;
+		Is Game In Progress == True;
+		(Global.GameState == 4 || Global.GameState == 5) == True;
+		Global.HeroCount > 0;
+	}
+
+	actions
+	{
+		Wait(0.250, Abort When False);
+		Event Player.SonarPlayerList = Empty Array;
+		Event Player.SonarPlayerList = Players in View Angle(Event Player, All Teams, 45);
+		"cancel if no players in view"
+		Loop If(Event Player.SonarPlayerList == Empty Array);
+		Event Player.SonarPlayerList = Sorted Array(Event Player.SonarPlayerList, Distance Between(Position Of(Event Player), Position Of(
+			Current Array Element)));
+		Event Player.SonarTargetFound = False;
+		While(Event Player.SonarTargetFound == False);
+			"checks if there are no more targets to check"
+			If(Event Player.SonarPlayerList == Empty Array);
+				Event Player.SonarCurrentTarget = Null;
+				Break;
+			End;
+			"get closest player in array (get players in view returns players closest to farthest)"
+			Event Player.SonarCurrentTarget = Event Player.SonarPlayerList[0];
+			If(Ray Cast Hit Player(Eye Position(Event Player), Eye Position(Event Player.SonarCurrentTarget), All Players(All Teams),
+				Event Player, False) == Null);
+				Modify Player Variable(Event Player, SonarPlayerList, Remove From Array By Index, 0);
+				Continue;
+			Else If(Distance Between(Eye Position(Event Player), Eye Position(Event Player.SonarPlayerList[0])) > 20);
+				Modify Player Variable(Event Player, SonarPlayerList, Remove From Array By Index, 0);
+				Continue;
+			End;
+			"valid target found! passing!"
+			Event Player.SonarTargetFound = Event Player.SonarPlayerList[0];
+			Event Player.SonarTargetFound = True;
+		End;
+		Loop If(Event Player.SonarTargetFound == False);
+		Wait(0.016, Abort When False);
+		Event Player.LastSeenPlayer = Event Player.SonarCurrentTarget;
+		Loop If Condition Is True;
+	}
+}
+
+rule("DeadDropSoulOrb")
+{
+	event
+	{
+		Player Died;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		(Global.GameState == 5 || Global.GameState == 5) == True;
+		Global.HeroCount > 0;
+		"check if player had readied at start (if not, player joined mid game and should not count)"
+		Event Player.PlayerReadyState == True;
+	}
+
+	actions
+	{
+		Call Subroutine(DropSoulOrb);
+		Wait(0.016, Ignore Condition);
+		Teleport(Event Player, Vector(0, -100, 0));
+	}
+}
+
+rule("PlayerJoinedOnStart")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Is Game In Progress == False;
+		Is Alive(Event Player) == True;
+		Global.BaseHero != 0;
+	}
+
+	actions
+	{
+		Start Forcing Player To Be Hero(Event Player, Global.BaseHero);
+	}
+}
+
+rule("HostDebugHUD")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	conditions
+	{
+		Event Player == Host Player;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Is Game In Progress == True;
+	}
+
+	actions
+	{
+		Create HUD Text(Host Player, String("{0}: {1}", String("Server Load"), String("{0}%", Server Load)), Null, Null, Left, 0, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Host Player, String("{0}: {1}", String("Server Load Average"), String("{0}%", Server Load Average)), Null, Null,
+			Left, 1, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Host Player, String("{0}: {1}", String("Server Load Peak"), String("{0}%", Server Load Peak)), Null, Null, Left, 2,
+			Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Host Player, Custom String("{0}", Current Map), Null, Null, Left, 4, Color(White), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+	}
+}
+
+rule("MapSecondGenerationRandomizer")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	actions
+	{
+		"randomly selects between first and second version of map"
+		Global.MapSecondGeneration = Random Integer(0, 1) == 1 ? True : False;
+	}
+}
+
+rule("MatchCountUpAnimation")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		Global.TerroristTimerMinutes < 4;
+		Global.GameState == 4;
+	}
+
+	actions
+	{
+		Wait(0.070, Abort When False);
+		If(Global.TerroristTimerSeconds >= 59);
+			Global.TerroristTimerMinutes += 1;
+			Global.TerroristTimerSeconds = 0;
+		Else;
+			Global.TerroristTimerSeconds += 1;
+		End;
+		Loop If Condition Is True;
+	}
+}
